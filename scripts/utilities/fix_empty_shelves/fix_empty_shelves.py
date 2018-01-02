@@ -36,10 +36,13 @@ def fix_empty_shelves(userprefs_file=None):
     if confirm == 'Cancel':
         return
     
-    prefs_dir = pm.about(preferences=True)
+    # prefs_dir = pm.about(preferences=True)
+    # use internalVar to get more accurate user prefs directory
+    prefs_dir = pm.internalVar(userPrefDir=True)
     
     if userprefs_file is None:
-        userprefs_file = prefs_dir + '/prefs/userPrefs.mel'
+        # userprefs_file = prefs_dir + '/prefs/userPrefs.mel'
+        userprefs_file = prefs_dir + 'userPrefs.mel'
     
     if not os.path.isfile(userprefs_file):
         pm.warning('Could not find userPrefs.mel at %s' % userprefs_file)
@@ -70,7 +73,7 @@ def fix_empty_shelves(userprefs_file=None):
     
     if not indices:
         pm.confirmDialog(title='No duplicates found :/',
-                         message='No changed were done and you can safely close the tool.',
+                         message='No changes were made. You can safely close the tool.',
                          button=['OK'], cancelButton='OK', dismissString='OK')
         os.remove(backup_file)
         return
